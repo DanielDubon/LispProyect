@@ -10,17 +10,7 @@ import Controller.Defun;
 public class InterpreteLisp {
 
     private static Set<ArrayList<String>> evaluatedExpressions = new HashSet<>();
-    public static void main(String[] args) {
 
-        String LISP = "(+ 5 (* 2 3) )";
-        ArrayList<String> components = parse(LISP);
-        ArrayList<String> prefix = toPrefix(components);
-        System.out.println(prefix);
-        ArrayList<String> groups = groupExpressions(prefix);
-        System.out.println(groups);
-        System.out.println(evaluarExpresion(groups));
-
-    }
 
 
     public static int evaluarExpresion(ArrayList<String> tokens) {
