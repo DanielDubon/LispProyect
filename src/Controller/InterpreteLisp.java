@@ -3,6 +3,7 @@ package Controller;
 import java.util.*;
 
 import static Controller.Expresion.parse;
+import Controller.Defun;
 
 
 
@@ -10,6 +11,7 @@ public class InterpreteLisp {
 
     private static Set<ArrayList<String>> evaluatedExpressions = new HashSet<>();
     public static void main(String[] args) {
+
         String LISP = "(+ 5 (* 2 3) )";
         ArrayList<String> components = parse(LISP);
         ArrayList<String> prefix = toPrefix(components);
