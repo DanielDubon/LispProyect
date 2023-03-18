@@ -7,9 +7,7 @@ import java.util.List;
 public class Predicado {
 
     // Predicado ATOM: devuelve verdadero si el término es una cadena de caracteres
-    public static boolean ATOM(Object term) {
-        return term instanceof String;
-    }
+
 
 
     public static boolean condicionales(ArrayList<String> tokens){
@@ -18,6 +16,11 @@ public class Predicado {
         if (condicion.equals("ATOM")){
             System.out.println(tokens.size());
            return tokens.size() <= 2;
+        }
+
+        if (condicion.equals("LIST")){
+            System.out.println(tokens.size());
+            return tokens.size() >= 3;
         }
 
         try {
