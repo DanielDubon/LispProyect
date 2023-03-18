@@ -10,7 +10,7 @@ public class Expresion {
         ArrayList<String> tokens = new ArrayList<>();
 
         // Reemplaza los paréntesis con un espacio en blanco alrededor para facilitar la tokenización
-        expression = expression.replace("(", " ( ").replace(")", " ) ");
+        expression = expression.replace("(", " ( ").replace(")", " ) ").replace(","," ");
 
         String[] parts = expression.split("\\s+");
 

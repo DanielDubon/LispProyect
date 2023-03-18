@@ -11,8 +11,14 @@ public class Predicado {
         return term instanceof String;
     }
 
+
     public static boolean condicionales(ArrayList<String> tokens){
         String condicion = tokens.get(0);
+
+        if (condicion.equals("ATOM")){
+            System.out.println(tokens.size());
+           return tokens.size() <= 2;
+        }
 
         try {
             double numero1 = Double.parseDouble(tokens.get(1));

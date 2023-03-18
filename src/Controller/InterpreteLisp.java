@@ -17,7 +17,7 @@ public class InterpreteLisp {
 
     public static void evaluarExpresion(ArrayList<String> tokens) {
 
-        if(tokens.get(0).equals("<") || tokens.get(0).equals(">")  || tokens.get(0).equals("=") ){
+        if(tokens.get(0).equals("<") || tokens.get(0).equals(">")  || tokens.get(0).equals("=") || tokens.get(0).equals("ATOM")){
 
             System.out.println(condicionales(tokens));
             return;
