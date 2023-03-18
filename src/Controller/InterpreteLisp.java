@@ -11,11 +11,43 @@ import Controller.Defun;
 
 public class InterpreteLisp {
 
-    private static Set<ArrayList<String>> evaluatedExpressions = new HashSet<>();
+    private static Map<String, String> variables = new HashMap<>();
+
+
+
+    public static void setq(String variable, String value) {
+        variables.put(variable, value);
+    }
+
+    public static void quote(String variable) {
+        if (variables.containsKey(variable)){
+            System.out.println(variable);
+        }else {
+            System.out.println("ERROR NO SE ENCONTRO VARIABLE");
+        }
+
+    }
 
 
 
     public static void evaluarExpresion(ArrayList<String> tokens) {
+
+        if (tokens.get(0).equals("setq") && tokens.size() == 3){
+            setq(tokens.get(1),tokens.get(2));
+            return;
+        }
+
+        if (tokens.get(0).equals("quote") && tokens.size() == 2){
+            quote(tokens.get(1));
+            return;
+        }
+
+        for (int i = 0; i < tokens.size(); i++) {
+            if (variables.containsKey(tokens.get(i))) {
+                tokens.set(i, variables.get(tokens.get(i)));
+                System.out.println(variables.get(tokens.get(i)));
+            }
+        }
 
         if(tokens.get(0).equals("<") || tokens.get(0).equals(">")  || tokens.get(0).equals("=") || tokens.get(0).equals("ATOM")|| tokens.get(0).equals("LIST")){
 
@@ -28,6 +60,7 @@ public class InterpreteLisp {
 
         Stack<Integer> stack = new Stack<>();
         for (int i = tokens.size() - 1; i >= 0; i--) {
+            System.out.println(tokens);
             String token = tokens.get(i);
             if (isNumber(token)) {
                 stack.push(Integer.parseInt(token));
