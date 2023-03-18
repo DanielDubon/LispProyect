@@ -21,11 +21,11 @@ public class DriverProgram {
             }
 
             ArrayList<String> components = parse(input);
-            ArrayList<String> prefix = toPrefix(components);
-            ArrayList<String> groupedPrefix = groupExpressions(prefix);
-            Object result = evaluarExpresion(groupedPrefix);
+            ArrayList<String> ORDTKNS = toPostfix(components);
+            System.out.println(ORDTKNS);
+            evaluarExpresion(ORDTKNS);
 
-            System.out.println(result);
+
         }
     }
 }

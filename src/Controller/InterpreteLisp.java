@@ -3,6 +3,8 @@ package Controller;
 import java.util.*;
 
 import static Controller.Expresion.parse;
+import static Controller.Predicado.condicionales;
+
 import Controller.Defun;
 
 
@@ -13,11 +15,16 @@ public class InterpreteLisp {
 
 
 
-    public static int evaluarExpresion(ArrayList<String> tokens) {
-        if (evaluatedExpressions.contains(tokens)) {
-            // Si la expresión ya ha sido evaluada, obtenemos el resultado del HashSet
-            return evaluatedExpressions.hashCode();
+    public static void evaluarExpresion(ArrayList<String> tokens) {
+
+        if(tokens.get(0).equals("<") || tokens.get(0).equals(">")  || tokens.get(0).equals("=") ){
+
+            System.out.println(condicionales(tokens));
+            return;
         }
+
+
+
 
         Stack<Integer> stack = new Stack<>();
         for (int i = tokens.size() - 1; i >= 0; i--) {
@@ -34,7 +41,7 @@ public class InterpreteLisp {
             }
         }
         int result = stack.pop();
-        return result;
+        System.out.println(result);
     }
 
     private static boolean isNumber(String token) {
@@ -77,7 +84,7 @@ public class InterpreteLisp {
 
 
 
-    public static ArrayList<String> toPrefix(ArrayList<String> infix) {
+    public static ArrayList<String> toPostfix(ArrayList<String> infix) {
         ArrayList<String> prefix = new ArrayList<>();
         Stack<String> stack = new Stack<>();
 

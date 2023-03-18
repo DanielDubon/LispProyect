@@ -1,29 +1,28 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Expresion {
 
     public static ArrayList<String> parse(String expression) {
-        ArrayList<String> components = new ArrayList<>();
-        int i = 0;
-        while (i < expression.length()) {
-            if (expression.charAt(i) == '(' || expression.charAt(i) == ')') {
-                components.add(Character.toString(expression.charAt(i)));
-                i++;
-            } else if (expression.charAt(i) == ' ') {
-                i++;
-            } else {
-                StringBuilder sb = new StringBuilder();
-                while (i < expression.length() && expression.charAt(i) != ' ' && expression.charAt(i) != '(' && expression.charAt(i) != ')') {
-                    sb.append(expression.charAt(i));
-                    i++;
-                }
-                components.add(sb.toString());
+        ArrayList<String> tokens = new ArrayList<>();
+
+        // Reemplaza los paréntesis con un espacio en blanco alrededor para facilitar la tokenización
+        expression = expression.replace("(", " ( ").replace(")", " ) ");
+
+        String[] parts = expression.split("\\s+");
+
+        for (String part : parts) {
+            if (!part.isBlank()) {
+                tokens.add(part);
             }
         }
-        return components;
-    }
 
+        return tokens;
+
+
+    }
 
 }
