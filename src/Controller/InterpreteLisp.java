@@ -4,6 +4,7 @@ import java.util.*;
 
 import static Controller.Defun.*;
 import static Controller.Defun.saveDefun;
+import static Controller.COND.*;
 import static Controller.Expresion.parse;
 import static Controller.Predicado.condicionales;
 
@@ -34,6 +35,7 @@ public class InterpreteLisp {
 
 
     public static void evaluarExpresion(ArrayList<String> tokens) {
+
 
 
         if (isDFunction(tokens.get(0))) {
@@ -89,11 +91,25 @@ public class InterpreteLisp {
             return;
         }
 
+        for (int i = 0; i < tokens.size(); i++) {
+            if (variables.containsKey(tokens.get(i))) {
+                tokens.set(i, variables.get(tokens.get(i)));
+                System.out.println(variables.get(tokens.get(i)));
+            }
+        }
 
 
-
-
-
+        if (tokens.get(0).equals("cond")){
+            if (conditionevaluation(tokens)){
+                System.out.println("se cumplio la condicion");
+                tokens.remove(0);
+                tokens.remove(0);
+                tokens.remove(0);
+                tokens.remove(0);
+                evaluarExpresion(tokens);
+            }
+            return;
+        }
 
         if (tokens.get(0).equals("defun")){
             saveDefun(tokens);
@@ -110,12 +126,7 @@ public class InterpreteLisp {
             return;
         }
 
-        for (int i = 0; i < tokens.size(); i++) {
-            if (variables.containsKey(tokens.get(i))) {
-                tokens.set(i, variables.get(tokens.get(i)));
-                System.out.println(variables.get(tokens.get(i)));
-            }
-        }
+
 
         if(tokens.get(0).equals("<") || tokens.get(0).equals(">")  || tokens.get(0).equals("=") || tokens.get(0).equals("ATOM")|| tokens.get(0).equals("LIST")){
 

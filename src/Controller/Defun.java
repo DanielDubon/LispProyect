@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Defun {
 
-    public static Map<String, List<String>> functionMap = new HashMap<>();
+    public  static Map<String, List<String>> functionMap = new HashMap<>();
 
     public static void saveDefun(ArrayList<String> tokens) {
         if (tokens.size() < 3) {
