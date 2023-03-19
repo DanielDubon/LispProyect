@@ -1,23 +1,41 @@
 package Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Defun {
 
-    private Map<String, List<String>> functionMap = new HashMap<>();
+    public static Map<String, List<String>> functionMap = new HashMap<>();
 
-    public void addFunction(String functionName, List<String> parameters, List<String> expressions) {
-        functionMap.put(functionName, parameters);
-        functionMap.put(functionName, expressions);
+    public static void saveDefun(ArrayList<String> tokens) {
+        if (tokens.size() < 3) {
+            throw new IllegalArgumentException("Error: defun debe tener al menos tres tokens.");
+        }
+
+        String functionName = tokens.get(1);
+        System.out.println(functionName);
+        List<String> functionBody = tokens.subList(2, tokens.size());
+        System.out.println(functionBody);
+        functionMap.put(functionName, functionBody);
+
+
+
+        }
+
+
+
+    public static List<String> getFunction(String functionName) {
+        return functionMap.get(functionName);
     }
 
-    public List<String> getParameters(String functionName) {
-        return functionMap.get(functionName + "-params");
+    public static boolean isDFunction(String functionName){
+        if (functionMap.containsKey(functionName)){
+            return true;
+        }
+        return false;
     }
 
-    public List<String> getExpressions(String functionName) {
-        return functionMap.get(functionName + "-expressions");
-    }
+
 }

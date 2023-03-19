@@ -2,8 +2,11 @@ package Controller;
 
 import java.util.*;
 
+import static Controller.Defun.*;
+import static Controller.Defun.saveDefun;
 import static Controller.Expresion.parse;
 import static Controller.Predicado.condicionales;
+
 
 import Controller.Defun;
 
@@ -31,6 +34,71 @@ public class InterpreteLisp {
 
 
     public static void evaluarExpresion(ArrayList<String> tokens) {
+
+
+        if (isDFunction(tokens.get(0))) {
+            System.out.println("es una funcion uwu");
+            List<String> functionData = functionMap.get(tokens.get(0));
+            System.out.println("FUNCTION DATA: "+ functionData);
+            if (functionData == null) {
+                throw new IllegalArgumentException("Error: función no definida: " + tokens.get(0));
+            }
+
+            int bodyStartIndex = 0;
+            for (int i = 1; i < functionData.size(); i++) {
+                if (isOperator(functionData.get(i))) {
+                    bodyStartIndex = i;
+                    break;
+                }
+            }
+            System.out.println("Body Index "+bodyStartIndex);
+
+
+            List<String> parameters = functionData.subList(0, bodyStartIndex);
+            System.out.println("PARAMETROS "+ parameters);
+            List<String> functionBody = functionData.subList(bodyStartIndex, functionData.size());
+            ArrayList<String> replacedTokens = new ArrayList<>(functionBody);
+
+            // Eliminar el nombre de la función y guardar los argumentos
+            tokens.remove(0);
+            List<String> arguments = new ArrayList<>(tokens.subList(0, parameters.size()));
+
+            if (parameters.size() != arguments.size()) {
+                throw new IllegalArgumentException("Error: no hay suficientes argumentos para la función " + tokens.get(0));
+            }
+
+            for (int i = 0; i < replacedTokens.size(); i++) {
+                String token = replacedTokens.get(i);
+                for (int j = 0; j < parameters.size(); j++) {
+                    if (token.equals(parameters.get(j))) {
+                        replacedTokens.set(i, arguments.get(j));
+                        break;
+                    }
+                }
+            }
+
+            // Recursividad
+            System.out.println("TOKENS REMPLAZADOS" + replacedTokens);
+
+            // Actualizar tokens con los argumentos reemplazados y llamar a evaluarExpresion
+            tokens.clear();
+            System.out.println("TOKENS" + tokens);
+            System.out.println("REPLACEDTOKENS" + replacedTokens);
+            tokens.addAll(replacedTokens);
+            evaluarExpresion(tokens);
+            return;
+        }
+
+
+
+
+
+
+
+        if (tokens.get(0).equals("defun")){
+            saveDefun(tokens);
+            return;
+        }
 
         if (tokens.get(0).equals("setq") && tokens.size() == 3){
             setq(tokens.get(1),tokens.get(2));
@@ -76,6 +144,8 @@ public class InterpreteLisp {
         int result = stack.pop();
         System.out.println(result);
     }
+
+
 
     private static boolean isNumber(String token) {
         try {
