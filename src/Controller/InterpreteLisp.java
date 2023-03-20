@@ -54,12 +54,16 @@ public class InterpreteLisp {
      @throws IllegalArgumentException si hay un token inválido o una función no definida.
      */
 
+
+
+
+
     public static int evaluarExpresion(ArrayList<String> tokens) {
 
 
 
         if (isDFunction(tokens.get(0))) {
-            // System.out.println("es una funcion");
+            //System.out.println("es una funcion");
             List<String> functionData = functionMap.get(tokens.get(0));
             // System.out.println("FUNCTION DATA: "+ functionData);
             if (functionData == null) {
@@ -107,7 +111,7 @@ public class InterpreteLisp {
            // System.out.println("TOKENS" + tokens);
             // System.out.println("REPLACEDTOKENS" + replacedTokens);
             tokens.addAll(replacedTokens);
-            evaluarExpresion(tokens);
+            System.out.println(evaluarExpresion(tokens));
 
         }
 
@@ -173,7 +177,7 @@ public class InterpreteLisp {
             }
         }
         int result = stack.pop();
-        System.out.println("Resultado"+result);
+
         return result;
     }
 
