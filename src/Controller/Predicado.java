@@ -6,9 +6,18 @@ import java.util.List;
 
 public class Predicado {
 
-    // Predicado ATOM: devuelve verdadero si el término es una cadena de caracteres
+    // Predicado ATOM: devuelve verdadero si es un "atomo"
 
+    /**
 
+     Verifica si se cumple una condición dada en la expresión, como ATOM, LIST, <, > o =.
+
+     @param tokens lista de tokens que representan la expresión a evaluar.
+
+     @return true si se cumple la condición, false si no se cumple.
+
+     @throws IllegalArgumentException si la entrada no es válida.
+     */
 
     public static boolean condicionales(ArrayList<String> tokens){
         String condicion = tokens.get(0);

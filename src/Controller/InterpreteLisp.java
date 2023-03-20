@@ -18,11 +18,24 @@ public class InterpreteLisp {
     private static Map<String, String> variables = new HashMap<>();
 
 
-
+    /**
+     * Asigna el valor especificado a una variable en el mapa de variables.
+     *
+     * @param variable El nombre de la variable a la que se le quiere asignar un valor.
+     * @param value El valor que se le quiere asignar a la variable.
+     */
     public static void setq(String variable, String value) {
         variables.put(variable, value);
     }
 
+
+    /**
+     * Imprime la variable de una variable en el mapa de variables.
+     *
+     * @param variable El nombre de la variable de la variable que se quiere imprimir.
+     *
+     * @throws IllegalArgumentException si la variable especificada no existe en el mapa de variables.
+     */
     public static void quote(String variable) {
         if (variables.containsKey(variable)){
             System.out.println(variable);
@@ -32,16 +45,23 @@ public class InterpreteLisp {
 
     }
 
+    /**
 
+     Evalúa una expresión en lenguaje Lisp.
 
-    public static void evaluarExpresion(ArrayList<String> tokens) {
+     @param tokens la lista de tokens que representan la expresión a evaluar.
+
+     @throws IllegalArgumentException si hay un token inválido o una función no definida.
+     */
+
+    public static int evaluarExpresion(ArrayList<String> tokens) {
 
 
 
         if (isDFunction(tokens.get(0))) {
-            System.out.println("es una funcion uwu");
+            // System.out.println("es una funcion");
             List<String> functionData = functionMap.get(tokens.get(0));
-            System.out.println("FUNCTION DATA: "+ functionData);
+            // System.out.println("FUNCTION DATA: "+ functionData);
             if (functionData == null) {
                 throw new IllegalArgumentException("Error: función no definida: " + tokens.get(0));
             }
@@ -53,11 +73,11 @@ public class InterpreteLisp {
                     break;
                 }
             }
-            System.out.println("Body Index "+bodyStartIndex);
+            //System.out.println("Body Index "+bodyStartIndex);
 
 
             List<String> parameters = functionData.subList(0, bodyStartIndex);
-            System.out.println("PARAMETROS "+ parameters);
+           // System.out.println("PARAMETROS "+ parameters);
             List<String> functionBody = functionData.subList(bodyStartIndex, functionData.size());
             ArrayList<String> replacedTokens = new ArrayList<>(functionBody);
 
@@ -80,21 +100,21 @@ public class InterpreteLisp {
             }
 
             // Recursividad
-            System.out.println("TOKENS REMPLAZADOS" + replacedTokens);
+           // System.out.println("TOKENS REMPLAZADOS" + replacedTokens);
 
             // Actualizar tokens con los argumentos reemplazados y llamar a evaluarExpresion
             tokens.clear();
-            System.out.println("TOKENS" + tokens);
-            System.out.println("REPLACEDTOKENS" + replacedTokens);
+           // System.out.println("TOKENS" + tokens);
+            // System.out.println("REPLACEDTOKENS" + replacedTokens);
             tokens.addAll(replacedTokens);
             evaluarExpresion(tokens);
-            return;
+
         }
 
         for (int i = 0; i < tokens.size(); i++) {
             if (variables.containsKey(tokens.get(i))) {
                 tokens.set(i, variables.get(tokens.get(i)));
-                System.out.println(variables.get(tokens.get(i)));
+                //  System.out.println(variables.get(tokens.get(i)));
             }
         }
 
@@ -108,22 +128,22 @@ public class InterpreteLisp {
                 tokens.remove(0);
                 evaluarExpresion(tokens);
             }
-            return;
+            return 0;
         }
 
         if (tokens.get(0).equals("defun")){
             saveDefun(tokens);
-            return;
+            return 0;
         }
 
         if (tokens.get(0).equals("setq") && tokens.size() == 3){
             setq(tokens.get(1),tokens.get(2));
-            return;
+            return 0;
         }
 
         if (tokens.get(0).equals("quote") && tokens.size() == 2){
             quote(tokens.get(1));
-            return;
+            return 0;
         }
 
 
@@ -131,7 +151,7 @@ public class InterpreteLisp {
         if(tokens.get(0).equals("<") || tokens.get(0).equals(">")  || tokens.get(0).equals("=") || tokens.get(0).equals("ATOM")|| tokens.get(0).equals("LIST")){
 
             System.out.println(condicionales(tokens));
-            return;
+            return 0;
         }
 
 
@@ -139,7 +159,7 @@ public class InterpreteLisp {
 
         Stack<Integer> stack = new Stack<>();
         for (int i = tokens.size() - 1; i >= 0; i--) {
-            System.out.println(tokens);
+            //System.out.println(tokens);
             String token = tokens.get(i);
             if (isNumber(token)) {
                 stack.push(Integer.parseInt(token));
@@ -153,10 +173,16 @@ public class InterpreteLisp {
             }
         }
         int result = stack.pop();
-        System.out.println(result);
+        System.out.println("Resultado"+result);
+        return result;
     }
 
+    /**
 
+     Comprueba si una cadena dada es un número entero válido.
+     @param token La cadena a comprobar.
+     @return true si la cadena es un número entero válido, false en caso contrario.
+     */
 
     private static boolean isNumber(String token) {
         try {
@@ -167,9 +193,26 @@ public class InterpreteLisp {
         }
     }
 
+    /**
+
+     Comprueba si el token dado es un operador válido.
+     @param token El token a comprobar.
+     @return true si el token es un operador, false en caso contrario.
+     */
     private static boolean isOperator(String token) {
         return token.equals("+") || token.equals("-") || token.equals("*") || token.equals("/");
     }
+
+
+    /**
+     * Aplica la operación indicada en los operandos proporcionados.
+     *
+     * @param operator  El operador que se va a aplicar.
+     * @param operand1  El primer operando.
+     * @param operand2  El segundo operando.
+     * @return El resultado de aplicar la operación a los operandos.
+     * @throws IllegalArgumentException si el operador no es válido.
+     */
 
     private static int applyOperator(String operator, int operand1, int operand2) {
         switch (operator) {
@@ -186,6 +229,13 @@ public class InterpreteLisp {
         }
     }
 
+    /**
+
+     Devuelve la precedencia de un operador.
+     @param token El operador a evaluar.
+     @return La precedencia del operador. 1 para '+' y '-', 2 para '*' y '/', 0 para cualquier otro operador.
+     */
+
     private static int precedence(String token) {
         if (token.equals("+") || token.equals("-")) {
             return 1;
@@ -196,7 +246,14 @@ public class InterpreteLisp {
         }
     }
 
+    /**
 
+     Convierte una expresión en notación infija a notación postfija.
+
+     @param infix lista de tokens que representan la expresión en notación infija.
+
+     @return lista de tokens que representan la expresión en notación postfija.
+     */
 
     public static ArrayList<String> toPostfix(ArrayList<String> infix) {
         ArrayList<String> prefix = new ArrayList<>();
@@ -230,29 +287,7 @@ public class InterpreteLisp {
         return prefix;
     }
 
-    public static ArrayList<String> groupExpressions(ArrayList<String> prefix) {
-        ArrayList<String> groups = new ArrayList<>();
-        Stack<ArrayList<String>> stack = new Stack<>();
 
-        for (int i = prefix.size() - 1; i >= 0; i--) {
-            String token = prefix.get(i);
-
-            if (isOperator(token)) {
-                ArrayList<String> group = new ArrayList<>();
-                group.add(token);
-                group.addAll(stack.pop());
-                group.addAll(stack.pop());
-                stack.push(group);
-            } else {
-                ArrayList<String> group = new ArrayList<>();
-                group.add(token);
-                stack.push(group);
-            }
-        }
-
-        groups.addAll(stack.pop());
-        return groups;
-    }
 
 
 }

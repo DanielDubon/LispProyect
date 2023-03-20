@@ -6,6 +6,14 @@ import java.util.Scanner;
 import static Controller.Expresion.parse;
 import static Controller.InterpreteLisp.*;
 
+/**
+
+ Clase principal que ejecuta el programa del intérprete de LISP. Se encarga de leer el input del usuario,
+
+ parsearlo y evaluar las expresiones ingresadas en notación polaca inversa.
+
+ */
+
 public class DriverProgram {
 
     public static void main(String[] args) {
@@ -22,7 +30,7 @@ public class DriverProgram {
 
             ArrayList<String> components = parse(input);
             ArrayList<String> ORDTKNS = toPostfix(components);
-            System.out.println(ORDTKNS);
+            //System.out.println(ORDTKNS);
             evaluarExpresion(ORDTKNS);
 
 
