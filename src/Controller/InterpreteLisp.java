@@ -60,6 +60,10 @@ public class InterpreteLisp {
 
     public static int evaluarExpresion(ArrayList<String> tokens) {
 
+        if (tokens.get(0).equals("quote") && tokens.size() == 2){
+            quote(tokens.get(1));
+            return 0;
+        }
 
 
         if (isDFunction(tokens.get(0))) {
@@ -111,7 +115,7 @@ public class InterpreteLisp {
            // System.out.println("TOKENS" + tokens);
             // System.out.println("REPLACEDTOKENS" + replacedTokens);
             tokens.addAll(replacedTokens);
-            System.out.println(evaluarExpresion(tokens));
+            evaluarExpresion(tokens);
 
         }
 
@@ -145,10 +149,7 @@ public class InterpreteLisp {
             return 0;
         }
 
-        if (tokens.get(0).equals("quote") && tokens.size() == 2){
-            quote(tokens.get(1));
-            return 0;
-        }
+
 
 
 
@@ -177,7 +178,7 @@ public class InterpreteLisp {
             }
         }
         int result = stack.pop();
-
+        System.out.println(result);
         return result;
     }
 
